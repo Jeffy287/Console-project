@@ -12,7 +12,7 @@ class UserDAO:
     def login_user(self, username, password):
         conn = get_db_connection()
         cursor = conn.cursor()
-        cursor.execute("SELECT * FROM users WHERE username = %s AND password = %s", (username, password))
+        cursor.execute("SELECT id, role FROM users WHERE username = %s AND password = %s", (username, password))
         user = cursor.fetchone()
         cursor.close()
         conn.close()

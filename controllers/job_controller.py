@@ -7,5 +7,5 @@ class JobController:
     def create_job(self, title, description):
         self.job_dao.create_job(title, description)
 
-    def list_jobs(self):
-        return self.job_dao.list_jobs()
+    def view_jobs(self):
+        return self.job_dao.view_jobs()

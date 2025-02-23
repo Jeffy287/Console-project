@@ -9,3 +9,9 @@ class ApplicationController:
 
     def check_application_status(self, user_id, job_id):
         return self.application_dao.check_application_status(user_id, job_id)
+
+    def view_all_applications(self):
+        return self.application_dao.view_all_applications()
+
+    def update_application_status(self, application_id, new_status):
+        self.application_dao.update_application_status(application_id, new_status)

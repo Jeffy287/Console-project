@@ -9,10 +9,10 @@ class JobDAO:
         cursor.close()
         conn.close()
 
-    def list_jobs(self):
+    def view_jobs(self):
         conn = get_db_connection()
         cursor = conn.cursor()
-        cursor.execute("SELECT * FROM jobs")
+        cursor.execute("SELECT id, title, description FROM jobs")
         jobs = cursor.fetchall()
         cursor.close()
         conn.close()
