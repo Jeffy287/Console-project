@@ -1,23 +1,19 @@
-from models.database import create_connection
+from models.database import get_db_connection
 
 class UserDAO:
-    @staticmethod
-    def create_user(username, password, role):
-        connection = create_connection()
-        cursor = connection.cursor()
-        query = "INSERT INTO users (username, password, role) VALUES (%s, %s, %s)"
-        cursor.execute(query, (username, password, role))
-        connection.commit()
+    def register_user(self, username, password, role):
+        conn = get_db_connection()
+        cursor = conn.cursor()
+        cursor.execute("INSERT INTO users (username, password, role) VALUES (%s, %s, %s)", (username, password, role))
+        conn.commit()
         cursor.close()
-        connection.close()
+        conn.close()
 
-    @staticmethod
-    def get_user_by_username(username):
-        connection = create_connection()
-        cursor = connection.cursor()
-        query = "SELECT * FROM users WHERE username = %s"
-        cursor.execute(query, (username,))
-        result = cursor.fetchone()
+    def login_user(self, username, password):
+        conn = get_db_connection()
+        cursor = conn.cursor()
+        cursor.execute("SELECT * FROM users WHERE username = %s AND password = %s", (username, password))
+        user = cursor.fetchone()
         cursor.close()
-        connection.close()
-        return result
+        conn.close()
+        return user

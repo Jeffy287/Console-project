@@ -1,23 +1,19 @@
-from models.database import create_connection
+from models.database import get_db_connection
 
 class JobDAO:
-    @staticmethod
-    def create_job(title, description, posted_by):
-        connection = create_connection()
-        cursor = connection.cursor()
-        query = "INSERT INTO jobs (title, description, posted_by) VALUES (%s, %s, %s)"
-        cursor.execute(query, (title, description, posted_by))
-        connection.commit()
+    def create_job(self, title, description):
+        conn = get_db_connection()
+        cursor = conn.cursor()
+        cursor.execute("INSERT INTO jobs (title, description) VALUES (%s, %s)", (title, description))
+        conn.commit()
         cursor.close()
-        connection.close()
+        conn.close()
 
-    @staticmethod
-    def get_all_jobs():
-        connection = create_connection()
-        cursor = connection.cursor()
-        query = "SELECT * FROM jobs"
-        cursor.execute(query)
-        result = cursor.fetchall()
+    def list_jobs(self):
+        conn = get_db_connection()
+        cursor = conn.cursor()
+        cursor.execute("SELECT * FROM jobs")
+        jobs = cursor.fetchall()
         cursor.close()
-        connection.close()
-        return result
+        conn.close()
+        return jobs

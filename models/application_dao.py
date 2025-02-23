@@ -1,33 +1,19 @@
-from models.database import create_connection
+from models.database import get_db_connection
 
 class ApplicationDAO:
-    @staticmethod
-    def apply_for_job(user_id, job_id):
-        connection = create_connection()
-        cursor = connection.cursor()
-        query = "INSERT INTO applications (user_id, job_id) VALUES (%s, %s)"
-        cursor.execute(query, (user_id, job_id))
-        connection.commit()
+    def apply_for_job(self, user_id, job_id):
+        conn = get_db_connection()
+        cursor = conn.cursor()
+        cursor.execute("INSERT INTO applications (user_id, job_id) VALUES (%s, %s)", (user_id, job_id))
+        conn.commit()
         cursor.close()
-        connection.close()
+        conn.close()
 
-    @staticmethod
-    def get_application_status(user_id, job_id):
-        connection = create_connection()
-        cursor = connection.cursor()
-        query = "SELECT status FROM applications WHERE user_id = %s AND job_id = %s"
-        cursor.execute(query, (user_id, job_id))
-        result = cursor.fetchone()
+    def check_application_status(self, user_id, job_id):
+        conn = get_db_connection()
+        cursor = conn.cursor()
+        cursor.execute("SELECT status FROM applications WHERE user_id = %s AND job_id = %s", (user_id, job_id))
+        status = cursor.fetchone()
         cursor.close()
-        connection.close()
-        return result[0] if result else None
-
-    @staticmethod
-    def update_application_status(application_id, status):
-        connection = create_connection()
-        cursor = connection.cursor()
-        query = "UPDATE applications SET status = %s WHERE application_id = %s"
-        cursor.execute(query, (status, application_id))
-        connection.commit()
-        cursor.close()
-        connection.close()
+        conn.close()
+        return status

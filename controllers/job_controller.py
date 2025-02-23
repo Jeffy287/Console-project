@@ -1,10 +1,11 @@
 from models.job_dao import JobDAO
 
 class JobController:
-    @staticmethod
-    def post_job(title, description, posted_by):
-        JobDAO.create_job(title, description, posted_by)
+    def __init__(self):
+        self.job_dao = JobDAO()
 
-    @staticmethod
-    def list_jobs():
-        return JobDAO.get_all_jobs()
+    def create_job(self, title, description):
+        self.job_dao.create_job(title, description)
+
+    def list_jobs(self):
+        return self.job_dao.list_jobs()
